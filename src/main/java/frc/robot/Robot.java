@@ -7,13 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj2.TimedRobot;
+import edu.wpi.first.wpilibj2.XboxController;
+import edu.wpi.first.wpilibj2.GenericHID;
+import edu.wpi.first.wpilibj2.GenericHID.Hand;
+import edu.wpi.first.wpilibj2.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -102,6 +103,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("X - Right", xbox.getX(Hand.kRight));
     SmartDashboard.putNumber("Y - Right", xbox.getY(Hand.kRight));
 
+
     SmartDashboard.putBoolean("Bumper - Left",  xbox.getBumper(Hand.kLeft));
     SmartDashboard.putBoolean("Bumper - Right", xbox.getBumper(Hand.kRight));
     SmartDashboard.putNumber("Trigger - Left",  xbox.getTriggerAxis(Hand.kLeft));
@@ -140,13 +142,49 @@ public class Robot extends TimedRobot {
     xbox.setRumble(GenericHID.RumbleType.kLeftRumble,  SmartDashboard.getNumber("Rumble Left",  0.0));
     xbox.setRumble(GenericHID.RumbleType.kRightRumble, SmartDashboard.getNumber("Rumble Right", 0.0));
     // can't use XBox button, so no detector for that
+
+    pollAxis(xbox);
+    pollButtons(xbox);
   }
   
+  private void pollAxis(XboxController controller) {
+    for (int axis = 0; axis < controller.getAxisCount(); axis++) {
+      String axisKey = String.format("Axis(%d)", axis);
+      SmartDashboard.putNumber(axisKey, controller.getRawAxis(axis));
+    }
+  }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+  private void pollButtons(XboxController controller) {
+    for (int button = 1; button < controller.getButtonCount(); button++){
+      String buttonKey = String.format("Buttong(%d)", button);
+      SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
+    }
+  }
+
+  private void bindButtons(XboxController controller){
+    for (int button = 1; button < controller.getButtonCount(); button++){
+      JoystickButton joystickButton = new JoystickButton(controller, button);
+      joystickButton.whenPressed( 
+        new InstantCommand( 
+          new Runnable() { 
+            public void run(
+              SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
+            );
+          }
+        ));
+
+      String buttonKey = String.format("Buttong(%d)", button);
+      SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
+    }
+  }
+
+  @Override
+  public void testInit() {
+      teleopInit();
+  }
+
   @Override
   public void testPeriodic() {
-  }
+      teleopPeriodic();
+  } 
 }
