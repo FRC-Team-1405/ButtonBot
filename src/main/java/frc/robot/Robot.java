@@ -7,14 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.TimedRobot;
-import edu.wpi.first.wpilibj2.XboxController;
-import edu.wpi.first.wpilibj2.GenericHID;
-import edu.wpi.first.wpilibj2.GenericHID.Hand;
-import edu.wpi.first.wpilibj2.buttons.JoystickButton;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -156,23 +156,6 @@ public class Robot extends TimedRobot {
 
   private void pollButtons(XboxController controller) {
     for (int button = 1; button < controller.getButtonCount(); button++){
-      String buttonKey = String.format("Buttong(%d)", button);
-      SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
-    }
-  }
-
-  private void bindButtons(XboxController controller){
-    for (int button = 1; button < controller.getButtonCount(); button++){
-      JoystickButton joystickButton = new JoystickButton(controller, button);
-      joystickButton.whenPressed( 
-        new InstantCommand( 
-          new Runnable() { 
-            public void run(
-              SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
-            );
-          }
-        ));
-
       String buttonKey = String.format("Buttong(%d)", button);
       SmartDashboard.putBoolean(buttonKey, controller.getRawButton(button));
     }
