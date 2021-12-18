@@ -9,10 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
@@ -27,8 +26,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  public XboxController xbox;
-  
+  private XboxController xbox = new XboxController(0);
+  private DigitalInput limitSwitch = new DigitalInput(9) ;
   
   /**
    * This function is run when the robot is first started up and should be
@@ -40,8 +39,6 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     
-    xbox = new XboxController(0);
-
     SmartDashboard.putNumber("Rumble Left",  0.0);
     SmartDashboard.putNumber("Rumble Right", 0.0);
   }
@@ -137,7 +134,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Start-Pressed", xbox.getStartButtonPressed());
     SmartDashboard.putBoolean("Start-Released", xbox.getStartButtonReleased());
 
-    
+    SmartDashboard.putBoolean("Limit-Switch", limitSwitch.get());
     
     xbox.setRumble(GenericHID.RumbleType.kLeftRumble,  SmartDashboard.getNumber("Rumble Left",  0.0));
     xbox.setRumble(GenericHID.RumbleType.kRightRumble, SmartDashboard.getNumber("Rumble Right", 0.0));
